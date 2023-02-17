@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Florenia
+namespace Florenia.Utility
 {
     public class UnitySingleton<T> : MonoBehaviour
         where T : Component

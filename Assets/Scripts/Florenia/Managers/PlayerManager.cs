@@ -1,24 +1,25 @@
-using System;
-using Florenia;
-using Florenia.Managers;
+using Florenia.Utility;
 using UnityEngine;
 
-public class PlayerManager : UnitySingleton<PlayerManager>
+namespace Florenia.Managers
 {
-    public GameObject Player;
-
-    public void SpawnPlayer()
+    public class PlayerManager : UnitySingleton<PlayerManager>
     {
-        Debug.Log("Spawning Player");
-    }
+        public GameObject Player;
 
-    private void OnEnable()
-    {
-        DungeonManager.Instance.DEventListener.OnPostDungeonBuildA += SpawnPlayer;
-    }
+        public void SpawnPlayer()
+        {
+            Debug.Log("Spawning Player");
+        }
 
-    private void OnDisable()
-    {
-        DungeonManager.Instance.DEventListener.OnPostDungeonBuildA -= SpawnPlayer;
+        private void OnEnable()
+        {
+            DungeonManager.Instance.DEventListener.OnPostDungeonBuildA += SpawnPlayer;
+        }
+
+        private void OnDisable()
+        {
+            DungeonManager.Instance.DEventListener.OnPostDungeonBuildA -= SpawnPlayer;
+        }
     }
 }

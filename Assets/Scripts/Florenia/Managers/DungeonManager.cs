@@ -1,8 +1,11 @@
+using System;
 using System.Collections;
 using DungeonArchitect;
 using DungeonArchitect.Builders.GridFlow;
 using DungeonArchitect.Flow.Impl.GridFlow;
+using Florenia.Utility;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Florenia.Managers
 {
@@ -16,6 +19,16 @@ namespace Florenia.Managers
         public GridFlowAsset BigDGridFlow;
         
         private GridFlowDungeonConfig dConfig;
+
+        public Action OnGenerate;
+        public Action OnCleanUp;
+        public Action OnDestroyed;
+        public Action OnBuilding;
+        public Action OnBuilt;
+        public Action OnBuildingNavigation;
+        public Action OnSpawningNPCs;
+        public Action OnCreatedLevel;
+        
 
         protected override void Awake()
         {
@@ -55,10 +68,7 @@ namespace Florenia.Managers
             StartCoroutine(RebuildLevelRoutine());
         }
 
-        private void SetLoadingTextVisible(bool visible) {
-            // var container = loadingText.gameObject.transform.parent.gameObject;
-            // container.SetActive(visible);
-        }
+
 
         private void NotifyBuild()
         {
@@ -72,33 +82,32 @@ namespace Florenia.Managers
         }
 
         private IEnumerator RebuildLevelRoutine() {
-            SetLoadingTextVisible(true);
-            // loadingText.text = "";
-            AppendLoadingText("Generating Level... ");
+            OnGenerate?.Invoke();
+            
+            OnCleanUp?.Invoke();
             FloreniaDungeon.DestroyDungeon();
-            NotifyDestroyed();
-            yield return 0;	
+            OnDestroyed?.Invoke();//NotifyDestroyed();
+            yield return new WaitForSeconds(0.1f);	
     
+            OnBuilding?.Invoke();
             FloreniaDungeon.Build();
-            yield return 0;
-            NotifyBuild();
-            yield return 0;	
-            AppendLoadingText("Building Navigation... ");
-            yield return 0;		// Wait for a frame to show our loading text
-    
+            yield return new WaitForSeconds(0.1f);	
+            OnBuilt?.Invoke();//NotifyBuild();
+            yield return new WaitForSeconds(0.1f);	
+            
+            OnBuildingNavigation?.Invoke();
+            yield return new WaitForSeconds(0.1f);	
             RebuildNavigation();
-            AppendLoadingText("Spawning NPCs...");
-            yield return 0;		// Wait for a frame to show our loading text
+            
+            OnSpawningNPCs?.Invoke();
+            yield return new WaitForSeconds(0.1f);	
     
             // npcSpawner.RebuildNPCs();
-            AppendLoadingText("DONE!\n");
-            SetLoadingTextVisible(false);
+            OnCreatedLevel?.Invoke();
             yield return null;
         }
 
-        private void AppendLoadingText(string text) {
-            // loadingText.text += text;
-        }
+
 
         private void RebuildNavigation() {
             // navMesh.Build();
