@@ -38,7 +38,6 @@ namespace Florenia.Utility
         public override void OnPostDungeonBuild(Dungeon dungeon, DungeonModel model)
         {
             OnPostDungeonBuildA?.Invoke();
-            // dungeon.Markers.GetMarkerList()[1].gridPosition
         }
 
         /// <summary>

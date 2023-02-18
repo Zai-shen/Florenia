@@ -3,6 +3,7 @@ using System.Collections;
 using DungeonArchitect;
 using DungeonArchitect.Builders.GridFlow;
 using DungeonArchitect.Flow.Impl.GridFlow;
+using DungeonArchitect.Utils;
 using Florenia.Utility;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -68,7 +69,24 @@ namespace Florenia.Managers
             StartCoroutine(RebuildLevelRoutine());
         }
 
-
+        public Vector2 FindFirstPositionOf(string markerName)
+        {
+            Vector3 gridCellSize = Vector3.one;
+            Vector2 reCentering = Vector2.one / 2;
+            
+            foreach (PropSocket marker in FloreniaDungeon.Markers)
+            {
+                if (marker.SocketType == markerName) //marker.Equals(markerName))
+                {
+                    Vector3 worldPos = MathUtils.GridToWorld(gridCellSize, marker.gridPosition);
+                    // Debug.Log($"Found marker at {marker.gridPosition} grid coo, resulting in {worldPos} world coo.");
+                    
+                    return new Vector2(worldPos.x, worldPos.z) + reCentering;
+                }
+            }
+            
+            return new Vector2(0, 0);
+        }
 
         private void NotifyBuild()
         {
