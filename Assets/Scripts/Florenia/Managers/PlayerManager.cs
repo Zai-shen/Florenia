@@ -10,6 +10,7 @@ namespace Florenia.Managers
         public void SpawnPlayer()
         {
             Debug.Log("Spawning Player");
+            GameObject.Instantiate(Player);
         }
 
         private void OnEnable()
