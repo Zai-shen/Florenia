@@ -10,6 +10,8 @@ namespace Florenia.Managers
         public Action ResetPause;
         private bool _gamePaused;
 
+        private int deathCount = 1;
+
         private void OnEnable()
         {
             ResetPause += ResetPauseState;
@@ -58,6 +60,31 @@ namespace Florenia.Managers
                 // PauseMenu?.Continue();
             }
         }
-
+        
+        public void AddDeath(int death){
+            deathCount += death;
+            switch(deathCount){
+                case 1:
+                {
+                    DungeonManager.Instance.BuildSmall();
+                    break;
+                }
+                case 2:
+                {
+                    DungeonManager.Instance.BuildMedium();
+                    break;
+                }                
+                case 3:
+                {
+                    DungeonManager.Instance.BuildBig();
+                    break;
+                }
+                default:
+                {
+                    DungeonManager.Instance.BuildSmall();
+                    break;
+                }
+            }
+        }
     }
 }

@@ -1,3 +1,4 @@
+using Florenia.Managers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -42,9 +43,14 @@ namespace Florenia.Characters.Player
             if(currentHealth <= 20)
             {
                 anim.SetTrigger("Death");
-                SceneManager.LoadScene(1);
 
+                Die(0);
             }
+        }
+        
+        public void Die(int death){
+            GameManager.Instance.AddDeath(death);
+            currentHealth = maxHealth;
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
