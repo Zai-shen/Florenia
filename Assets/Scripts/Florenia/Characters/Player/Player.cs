@@ -28,10 +28,6 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            TakeDamage(damage);
-        }
     }
 
     void TakeDamage(int damage)
