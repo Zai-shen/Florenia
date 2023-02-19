@@ -1,21 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Healthbar : MonoBehaviour
+namespace Florenia.Characters.Player
 {
-    public Slider slider;
-
-    public void SetMaxHealth(int health)
+    public class Healthbar : MonoBehaviour
     {
-        slider.maxValue = health;
-        slider.value = health;
-    }
+        public Slider slider;
 
-   public void SetHealth(int health)
-    {
-        slider.value = health;
-    }
+        public void SetMaxHealth(int health)
+        {
+            slider.maxValue = health;
+            slider.value = health;
+        }
 
+        public void SetHealth(int health)
+        {
+            slider.value = health;
+        }
+
+    }
 }
