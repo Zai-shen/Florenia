@@ -25,6 +25,17 @@ namespace Florenia.Characters.Player.Inventory
                 slots.Add(iSlotGO.GetComponent<InventorySlot>());
             }
         }
+
+        public void ClearInventory()
+        {
+            foreach (InventorySlot slot in slots)
+            {
+                Destroy(slot.gameObject);
+            }
+            
+            slots.Clear();
+            AddEmptySlots(InventorySlots);
+        }
         
         [ContextMenu("Print slots")]
         private void DebugSlots()

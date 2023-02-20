@@ -24,8 +24,7 @@ namespace Florenia.Managers
 
         private void Start()
         {
-            Debug.Log("Building intial dungeon");
-            DungeonManager.Instance.BuildSmall();
+            AddDeath(0);
         }
 
         private void Update()
@@ -36,7 +35,7 @@ namespace Florenia.Managers
             }
         
             if (Input.GetKeyDown(KeyCode.R)) {
-                DungeonManager.Instance.CreateNewLevel();
+                AddDeath(0);
             }
         }
 
@@ -62,6 +61,8 @@ namespace Florenia.Managers
         }
         
         public void AddDeath(int death){
+            PlayerManager.Instance.InGamePlayer?.ResetInventory();
+            
             deathCount += death;
             switch(deathCount){
                 case 1:

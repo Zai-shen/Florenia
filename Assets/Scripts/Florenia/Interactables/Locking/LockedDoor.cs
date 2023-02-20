@@ -11,6 +11,8 @@ namespace Florenia.Interactables.Locking
         public string[] validKeys = new string[0];
 
         private bool locked = true;
+        public Collider2D LockCollider;
+        private SpriteRenderer _spriteRenderer;
 
         private void Start()
         {
@@ -21,6 +23,8 @@ namespace Florenia.Interactables.Locking
                 lockId = lockItemMetadata.itemId;
                 validKeys = lockItemMetadata.referencedItemIds;
             }
+
+            _spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
         /// <summary>
@@ -100,12 +104,25 @@ namespace Florenia.Interactables.Locking
 
         public void Lock()
         {
+            LockCollider.isTrigger = false;
             locked = true;
+            
+            ChangeSpriteTransparency(1f);
         }
 
         public void Unlock()
         {
+            LockCollider.isTrigger = true;
             locked = false;
+            
+            ChangeSpriteTransparency(0.2f);
+        }
+
+        private void ChangeSpriteTransparency(float alpha)
+        {
+            Color initialColor = _spriteRenderer.color;
+            initialColor.a = alpha;
+            _spriteRenderer.color = initialColor;
         }
     }
 }

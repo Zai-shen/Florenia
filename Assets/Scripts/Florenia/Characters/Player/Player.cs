@@ -1,6 +1,5 @@
 using Florenia.Managers;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Florenia.Characters.Player
 {
@@ -11,7 +10,8 @@ namespace Florenia.Characters.Player
         public Healthbar healthbar;
         public int damage = 20;
         public bool GodMode = true;
-        
+
+        private Inventory.Inventory _inventory;
         private Animator anim;
 
         public bool IsDead
@@ -28,6 +28,7 @@ namespace Florenia.Characters.Player
             healthbar = FindObjectOfType<Healthbar>();
             healthbar.SetMaxHealth(maxHealth);
             anim = GetComponent<Animator>();
+            _inventory = GetComponent<Inventory.Inventory>();
         }
 
         private void Update()
@@ -58,14 +59,16 @@ namespace Florenia.Characters.Player
             currentHealth = maxHealth;
         }
 
+        public void ResetInventory()
+        {
+            _inventory.ClearInventory();
+        }
+
         private void OnCollisionEnter2D(Collision2D collision)
         {
             if (collision.gameObject.tag == "Enemy")
             {
-            
                 TakeDamage(damage);
-           
-            
             }
         }
 
