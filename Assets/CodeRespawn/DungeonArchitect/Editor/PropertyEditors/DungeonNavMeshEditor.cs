@@ -35,7 +35,10 @@ namespace DungeonArchitect.Editors
 		public void OnDisable()
 		{
 			var navMesh = target as DungeonNavMesh;
-			navMesh.SetNavMeshVisible(false);
+			if (navMesh != null)
+			{
+				navMesh.SetNavMeshVisible(false);
+			}
 		}
 
 		public override void OnInspectorGUI()

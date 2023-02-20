@@ -27,6 +27,11 @@ namespace DungeonArchitect
             this.y = y;
         }
 
+        public override string ToString()
+        {
+            return base.ToString() + $"x = {x}, y = {y}";
+        }
+
         public void Set(int x, int y)
         {
             this.x = x;

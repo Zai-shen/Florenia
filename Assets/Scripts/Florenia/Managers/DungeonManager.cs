@@ -25,7 +25,7 @@ namespace Florenia.Managers
         public Action OnCleanUp;
         public Action OnDestroyed;
         public Action OnBuilding;
-        public Action OnBuilt;
+        public Action<DungeonModel, LevelMarkerList> OnBuilt;
         public Action OnBuildingNavigation;
         public Action OnSpawningNPCs;
         public Action OnCreatedLevel;
@@ -87,35 +87,23 @@ namespace Florenia.Managers
             
             return new Vector2(0, 0);
         }
-
-        private void NotifyBuild()
-        {
-            // waypointGenerator.BuildWaypoints(FloreniaDungeon.ActiveModel, FloreniaDungeon.Markers);
-            // specialRoomFinder.FindSpecialRooms(FloreniaDungeon.ActiveModel);
-        }
-
-        private void NotifyDestroyed() {
-            // waypointGenerator.OnDungeonDestroyed(FloreniaDungeon);
-            // specialRoomFinder.OnDungeonDestroyed(FloreniaDungeon);
-        }
-
+        
         private IEnumerator RebuildLevelRoutine() {
             OnGenerate?.Invoke();
             
             OnCleanUp?.Invoke();
             FloreniaDungeon.DestroyDungeon();
-            OnDestroyed?.Invoke();//NotifyDestroyed();
+            OnDestroyed?.Invoke();
             yield return new WaitForSeconds(0.1f);	
     
             OnBuilding?.Invoke();
             FloreniaDungeon.Build();
             yield return new WaitForSeconds(0.1f);	
-            OnBuilt?.Invoke();//NotifyBuild();
+            OnBuilt?.Invoke(FloreniaDungeon.ActiveModel, FloreniaDungeon.Markers);
             yield return new WaitForSeconds(0.1f);	
             
             OnBuildingNavigation?.Invoke();
             yield return new WaitForSeconds(0.1f);	
-            RebuildNavigation();
             
             OnSpawningNPCs?.Invoke();
             yield return new WaitForSeconds(0.1f);	
@@ -126,9 +114,5 @@ namespace Florenia.Managers
         }
 
 
-
-        private void RebuildNavigation() {
-            // navMesh.Build();
-        }
     }
 }
