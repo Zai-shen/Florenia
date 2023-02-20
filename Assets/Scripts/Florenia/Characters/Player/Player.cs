@@ -44,8 +44,8 @@ namespace Florenia.Characters.Player
             if (currentHealth < 20)
                 currentHealth = 20;
 
-            healthbar.SetHealth(currentHealth);
-
+            UpdateHealthBar();
+            
             if(currentHealth <= 20)
             {
                 anim.SetTrigger("Death");
@@ -53,10 +53,25 @@ namespace Florenia.Characters.Player
                 Die(0);
             }
         }
+
+        public void RegenerateHealth(int hp)
+        {
+            int cHP = currentHealth + hp;
+            currentHealth = cHP > maxHealth ? maxHealth : cHP;
+            
+            UpdateHealthBar();
+        }
+
+        private void UpdateHealthBar()
+        {
+            healthbar.SetHealth(currentHealth);
+
+        }
         
         public void Die(int death){
             GameManager.Instance.AddDeath(death);
             currentHealth = maxHealth;
+            UpdateHealthBar();
         }
 
         public void ResetInventory()
