@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using DungeonArchitect.Flow.Items;
+﻿using DungeonArchitect.Flow.Items;
+using Florenia.Characters.Player.Inventory;
 using Florenia.Interactables.Locking;
+using Florenia.Managers;
 using UnityEngine;
-using Inventory = Florenia.Characters.Player.Inventory.Inventory;
-using InventoryItem = Florenia.Characters.Player.Inventory.InventoryItem;
-using InventoryItemType = Florenia.Characters.Player.Inventory.InventoryItemType;
 
 namespace Florenia.Interactables.Items.PickUps
 {
@@ -18,24 +15,29 @@ namespace Florenia.Interactables.Items.PickUps
         {
             if (!other.CompareTag("Player"))
                 return;
-            
-            Debug.Log($"Picking up {transform.name}");
-            var go = other.gameObject;
-            var inventory = go.GetComponentInChildren<Inventory>();
+
+            AddToInventory();
+        }
+
+        private void AddToInventory()
+        {
+            Inventory inventory = PlayerManager.Instance.InGamePlayer.GetComponentInChildren<Inventory>();
             if (inventory != null)
             {
-                var item = new InventoryItem();
-                item.itemType = itemType;
-                item.itemId = GetItemId();
-                item.icon = icon;
-
-                if (inventory.Add(item))
+                InventoryItem item = new()
                 {
-                    // We successfully added this item to the inventory. destroy this game object
-                    DestroyDoor(item.itemId);
-                    
-                    Destroy(gameObject);
-                    return;
+                    itemType = itemType,
+                    itemId = GetItemId(),
+                    icon = icon
+                };
+
+                if (!inventory.Add(item))
+                {
+                    Debug.Log($"Could not add item from {transform}");
+                }
+                else
+                {
+                    Destroy(transform.gameObject);
                 }
             }
         }

@@ -1,33 +1,35 @@
 using Cinemachine;
+using Florenia.Characters.Player;
 using Florenia.Utility;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Florenia.Managers
 {
     public class PlayerManager : UnitySingleton<PlayerManager>
     {
-        public GameObject Player;
+        public GameObject PlayerPrefab;
         public CinemachineVirtualCamera CmVcam;
+        public Player InGamePlayer;
 
-        private GameObject inGamePlayer;
         private bool playerSpawned;
 
         public void SpawnPlayer()
         {
             Vector3 spawnPos = DungeonManager.Instance.FindFirstPositionOf("SpawnPoint");
-            // Debug.Log($"Spawning Player at {spawnPos}");
+            // Debug.Log($"Spawning PlayerPrefab at {spawnPos}");
 
             if (playerSpawned)
             {
-                inGamePlayer.transform.position = spawnPos;
+                InGamePlayer.transform.position = spawnPos;
                 return;
             }
             
-            inGamePlayer = GameObject.Instantiate(Player, spawnPos, quaternion.identity);
+            InGamePlayer = GameObject.Instantiate(PlayerPrefab, spawnPos, quaternion.identity).GetComponent<Player>();
             playerSpawned = true;
-            CmVcam.Follow = inGamePlayer.transform;
-            CmVcam.LookAt = inGamePlayer.transform;
+            CmVcam.Follow = InGamePlayer.transform;
+            CmVcam.LookAt = InGamePlayer.transform;
         }
 
         private void OnEnable()

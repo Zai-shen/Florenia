@@ -5,13 +5,22 @@ namespace Florenia.Characters.Player.Inventory
 {
     public class InventorySlot : MonoBehaviour
     {
-        public InventoryItem item = new InventoryItem();
-
-        private void Awake()
+        public InventoryItem item = new();
+        
+        public bool IsEmpty()
         {
-            Debug.Log("Initializing item!");
-            item = new InventoryItem();
-            Debug.Log($"Initialized as {item.itemType}");
+            return item.itemType == InventoryItemType.None;
+        }
+        
+        [ContextMenu("Print slot")]
+        private void DoPrint()
+        {
+            Debug.Log(this);
+        }
+        
+        public override string ToString()
+        {
+            return base.ToString() + $"Inventory Slot: item={item}";
         }
     }
 }

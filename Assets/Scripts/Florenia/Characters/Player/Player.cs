@@ -10,6 +10,8 @@ namespace Florenia.Characters.Player
         public int currentHealth;
         public Healthbar healthbar;
         public int damage = 20;
+        public bool GodMode = true;
+        
         private Animator anim;
 
         public bool IsDead
@@ -34,6 +36,9 @@ namespace Florenia.Characters.Player
 
         void TakeDamage(int damage)
         {
+            if (GodMode)
+                return;
+
             currentHealth -= damage;
             if (currentHealth < 20)
                 currentHealth = 20;
