@@ -27,12 +27,18 @@ namespace Florenia.Managers
         
         private IEnumerator DoBuildNavmeshCo()
         {
+            ClearNavMesh();
             Physics2D.SyncTransforms();
 
             yield return new WaitForFixedUpdate();
             _navMeshSurface.BuildNavMesh();
             yield return null;
+        }
 
+        [ContextMenu("Clear Navmesh")]
+        private void ClearNavMesh()
+        {
+            _navMeshSurface.RemoveData();
         }
     }
 }
