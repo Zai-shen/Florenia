@@ -68,7 +68,6 @@ namespace Florenia.Interactables.Locking
 
         private bool CanOpenDoor(Collider2D other)
         {
-            Debug.Log("Can open door?");
             Inventory inventory = PlayerManager.Instance.InGamePlayer.GetComponentInChildren<Inventory>();//other.gameObject.GetComponentInChildren<Inventory>();
             if (inventory != null)
             {
@@ -93,13 +92,11 @@ namespace Florenia.Interactables.Locking
         private void OpenDoor()
         {
             Unlock();
-            Debug.Log("Opening door");
         }
 
         private void CloseDoor()
         {
             Lock();
-            Debug.Log("Closing door");
         }
 
         public void Lock()

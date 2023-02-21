@@ -1,19 +1,14 @@
 using System;
-using DungeonArchitect.Builders.GridFlow;
-using DungeonArchitect.Navigation;
+using System.Collections;
+using NavMeshPlus.Components;
 using UnityEngine;
 
 namespace Florenia.Managers
 {
     public class NavigationManager : MonoBehaviour
     {
-        private DungeonNavMesh _dNavMesh;
-
-        private void Awake()
-        {
-            _dNavMesh = GetComponent<DungeonNavMesh>();
-        }
-
+        public NavMeshSurface _navMeshSurface;
+        
         private void OnEnable()
         {
             DungeonManager.Instance.OnBuildingNavigation += DoBuildNavmesh;
@@ -23,10 +18,21 @@ namespace Florenia.Managers
         {
             DungeonManager.Instance.OnBuildingNavigation -= DoBuildNavmesh;
         }
-        
+
+        [ContextMenu("Rebuild Navmesh")]
         private void DoBuildNavmesh()
         {
-            _dNavMesh.Build();
+            StartCoroutine(DoBuildNavmeshCo());
+        }
+        
+        private IEnumerator DoBuildNavmeshCo()
+        {
+            Physics2D.SyncTransforms();
+
+            yield return new WaitForFixedUpdate();
+            _navMeshSurface.BuildNavMesh();
+            yield return null;
+
         }
     }
 }

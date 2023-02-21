@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Threading.Tasks;
 using DungeonArchitect;
 using DungeonArchitect.Builders.GridFlow;
 using DungeonArchitect.Flow.Impl.GridFlow;
@@ -76,7 +77,7 @@ namespace Florenia.Managers
             
             foreach (PropSocket marker in FloreniaDungeon.Markers)
             {
-                if (marker.SocketType == markerName) //marker.Equals(markerName))
+                if (marker.SocketType == markerName)
                 {
                     Vector3 worldPos = MathUtils.GridToWorld(gridCellSize, marker.gridPosition);
                     // Debug.Log($"Found marker at {marker.gridPosition} grid coo, resulting in {worldPos} world coo.");
@@ -94,19 +95,19 @@ namespace Florenia.Managers
             OnCleanUp?.Invoke();
             FloreniaDungeon.DestroyDungeon();
             OnDestroyed?.Invoke();
-            yield return new WaitForSeconds(0.1f);	
-    
+            yield return null;
+            
             OnBuilding?.Invoke();
             FloreniaDungeon.Build();
-            yield return new WaitForSeconds(0.1f);	
+            yield return null;
             OnBuilt?.Invoke(FloreniaDungeon.ActiveModel, FloreniaDungeon.Markers);
-            yield return new WaitForSeconds(0.1f);	
+            yield return null;
+            yield return new WaitForFixedUpdate();
             
             OnBuildingNavigation?.Invoke();
-            yield return new WaitForSeconds(0.1f);	
             
             OnSpawningNPCs?.Invoke();
-            yield return new WaitForSeconds(0.1f);	
+            yield return null;
     
             // npcSpawner.RebuildNPCs();
             OnCreatedLevel?.Invoke();
