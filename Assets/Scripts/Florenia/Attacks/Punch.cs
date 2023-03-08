@@ -1,4 +1,5 @@
-﻿using Florenia.Characters.Player;
+﻿using Florenia.Characters;
+using Florenia.Characters.Player;
 using UnityEngine;
 
 public class Punch : MeleeAttack
@@ -11,7 +12,7 @@ public class Punch : MeleeAttack
         // Vector3 _spawnDirection = (Target.position - transform.position).normalized;
         Vector3 _spawnLocation = Target.position; // + new Vector3(0, _spawnDistance.y, 0)) + (_spawnDirection * _spawnDistance.z);
         Instantiate(HitEffect, _spawnLocation, Quaternion.identity);
-        Target.GetComponent<Player>().TakeDamage(AttackDamage);
+        Target.GetComponent<Health>().TryTakeDamage(AttackDamage);
         // Health _targetHealth = Target.GetComponent<Health>();
         // _targetHealth.TryTakeDamage(AttackDamage);
     }

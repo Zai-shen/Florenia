@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Florenia.Characters.Player
 {
-    public class Health : MonoBehaviour
+    public class HealthOld : MonoBehaviour
     {
 
         // Fields
@@ -35,7 +35,7 @@ namespace Florenia.Characters.Player
         }
 
         // Constructor
-        public Health(int health, int maxHealth)
+        public HealthOld(int health, int maxHealth)
         {
             _currentHealth = health;
             _currentMaxHealth = maxHealth;

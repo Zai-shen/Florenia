@@ -1,77 +1,66 @@
+using System;
 using Florenia.Managers;
 using UnityEngine;
 
 namespace Florenia.Characters.Player
 {
+    [RequireComponent(typeof(Health))]
     public class Player : MonoBehaviour
     {
-        public int maxHealth = 100;
-        public int currentHealth;
+        #region Health
+
+        public Health Health;
         public Healthbar healthbar;
+
+        #endregion
+        
         public int damage = 20;
-        public bool GodMode = true;
 
         private Inventory.Inventory _inventory;
         private Animator anim;
 
-        public bool IsDead
+        private void Awake()
         {
-            get
-            {
-                return currentHealth == 0;
-            }
+            Health = GetComponent<Health>();
         }
 
         private void Start()
         {
-            currentHealth = maxHealth;
             healthbar = FindObjectOfType<Healthbar>();
-            healthbar.SetMaxHealth(maxHealth);
+            Health.ResetToFull();
+            healthbar.SetMaxHealth(Health.HealthPoints);
             anim = GetComponent<Animator>();
             _inventory = GetComponent<Inventory.Inventory>();
         }
 
-        private void Update()
+        private void OnEnable()
         {
+            Health.OnDeath += Die;
+            Health.OnTakeDamage += SetUIHealth;
+            Health.OnRegenerate += SetUIHealth;
+        }
+        private void OnDisable()
+        {
+            Health.OnDeath -= Die;
+            Health.OnTakeDamage -= SetUIHealth;
+            Health.OnRegenerate -= SetUIHealth;
         }
 
-        public void TakeDamage(int damage)
-        {
-            if (GodMode)
-                return;
-
-            currentHealth -= damage;
-            if (currentHealth < 20)
-                currentHealth = 20;
-
-            UpdateHealthBar();
-            
-            if(currentHealth <= 20)
-            {
-                anim.SetTrigger("Death");
-
-                Die(0);
-            }
-        }
-
-        public void RegenerateHealth(int hp)
-        {
-            int cHP = currentHealth + hp;
-            currentHealth = cHP > maxHealth ? maxHealth : cHP;
-            
-            UpdateHealthBar();
-        }
-
-        private void UpdateHealthBar()
+        private void SetUIHealth(int currentHealth)
         {
             healthbar.SetHealth(currentHealth);
+        }
 
+        public void Die()
+        {
+            Die(0);
         }
         
         public void Die(int death){
+            anim.SetTrigger("Death");
             GameManager.Instance.AddDeath(death);
-            currentHealth = maxHealth;
-            UpdateHealthBar();
+            Health.ResetToFull();
+            SetUIHealth(Health.HealthPoints);
         }
 
         public void ResetInventory()

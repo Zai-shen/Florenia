@@ -1,4 +1,5 @@
 using System;
+using Florenia.Characters;
 using Florenia.Managers;
 using UnityEngine;
 
@@ -12,7 +13,7 @@ namespace Florenia.Items.PickUps.Temporary
         {
             if (!col.CompareTag("Player")) return;
             
-            PlayerManager.Instance.InGamePlayer.RegenerateHealth(Health);
+            PlayerManager.Instance.InGamePlayer.GetComponent<Health>().RegenerateHealth(Health);
             Destroy(transform.gameObject);
         }
     }

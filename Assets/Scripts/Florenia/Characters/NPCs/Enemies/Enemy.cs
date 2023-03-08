@@ -93,7 +93,6 @@ public class Enemy : MonoBehaviour
 
     private void SetTarget()
     {
-        Debug.Log($"Setting target and starting");
         _target = PlayerManager.Instance.InGamePlayer.transform;
         _attack.Target = _target;
         gameStarted = true;
