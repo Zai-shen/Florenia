@@ -1,3 +1,4 @@
+using System;
 using Cinemachine;
 using Florenia.Characters.Player;
 using Florenia.Utility;
@@ -13,6 +14,7 @@ namespace Florenia.Managers
         public CinemachineVirtualCamera CmVcam;
         public Player InGamePlayer;
 
+        public static Action PlayerSpawn;
         private bool playerSpawned;
 
         public void SpawnPlayer()
@@ -23,11 +25,13 @@ namespace Florenia.Managers
             if (playerSpawned)
             {
                 InGamePlayer.transform.position = spawnPos;
+                PlayerSpawn?.Invoke();
                 return;
             }
             
             InGamePlayer = GameObject.Instantiate(PlayerPrefab, spawnPos, quaternion.identity).GetComponent<Player>();
             playerSpawned = true;
+            PlayerSpawn?.Invoke();
             CmVcam.Follow = InGamePlayer.transform;
             CmVcam.LookAt = InGamePlayer.transform;
         }

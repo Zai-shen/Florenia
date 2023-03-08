@@ -35,7 +35,7 @@ namespace Florenia.Characters.Player
         {
         }
 
-        void TakeDamage(int damage)
+        public void TakeDamage(int damage)
         {
             if (GodMode)
                 return;
