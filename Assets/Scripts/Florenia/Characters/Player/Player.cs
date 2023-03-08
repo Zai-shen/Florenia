@@ -1,6 +1,7 @@
 using System;
 using Florenia.Managers;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Florenia.Characters.Player
 {
@@ -14,7 +15,7 @@ namespace Florenia.Characters.Player
 
         #endregion
         
-        public int damage = 20;
+        public int Damage = 20;
 
         private Inventory.Inventory _inventory;
         private Animator anim;

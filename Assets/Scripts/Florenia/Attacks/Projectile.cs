@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using Florenia.Characters;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
 public class Projectile : MonoBehaviour
 {
+    public LayerMask CollisionLayers;
     public ParticleSystem HitEffect;
     
     [HideInInspector]public float ShotForce;
-    [HideInInspector]public int ShotDamage;
+    public int ShotDamage;
     public float MaxLifeTime = 4f;
     private Rigidbody _rb;
     private bool _didHit;
@@ -29,8 +29,21 @@ public class Projectile : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         GameObject colliderGo = collision.gameObject;
-        if ((((1 << colliderGo.layer) == Globals.PlayerMask)
-            || ((1 << colliderGo.layer) == Globals.EnemyMask))
+        if (((CollisionLayers.value & (1 << colliderGo.layer)) > 0)
+            && !_didHit)
+        {
+            _didHit = true;
+            
+            DealDamage(colliderGo);
+            CreateHitFX();
+            Destroy(this.gameObject);
+        }
+    }
+    
+    private void OnCollisionEnter(Collision collision)
+    {
+        GameObject colliderGo = collision.gameObject;
+        if (((CollisionLayers.value & (1 << colliderGo.layer)) > 0)
             && !_didHit)
         {
             _didHit = true;

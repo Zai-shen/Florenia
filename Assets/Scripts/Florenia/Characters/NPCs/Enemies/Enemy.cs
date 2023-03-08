@@ -1,13 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Florenia.Characters;
 using Florenia.Managers;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
-[RequireComponent(typeof(Attack))]
+[RequireComponent(typeof(Attack), typeof(Health))]
 public class Enemy : MonoBehaviour
 {
     public LayerMask IgnoreSightCheck;
@@ -28,11 +29,11 @@ public class Enemy : MonoBehaviour
     
     #endregion
 
-    // #region Health
-    //
-    // public Health Health;
-    //
-    // #endregion
+    #region Health
+    
+    public Health Health;
+    
+    #endregion
     
     #region Attacking
     
@@ -70,6 +71,9 @@ public class Enemy : MonoBehaviour
         
         _attack = GetComponent<Attack>();
         // _attack.EAnimator = _animator;
+        
+        Health = GetComponent<Health>();
+        Health.OnDeath += Die;
     }
 
     private void InitNavMeshAgent()

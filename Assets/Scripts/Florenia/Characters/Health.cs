@@ -53,7 +53,6 @@ namespace Florenia.Characters
     
         public void TakeDamage(int dmg)
         {
-            Debug.Log($"Taking {dmg} damage");
             HealthPoints -= dmg;
             OnTakeDamage?.Invoke(HealthPoints);
         

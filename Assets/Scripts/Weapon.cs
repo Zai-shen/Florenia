@@ -6,10 +6,10 @@ public class Weapon : MonoBehaviour
 {
     public Transform firePoint;
     public GameObject attackPrefab;
-    
+    public int Damage = 20;
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -17,8 +17,11 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    void Shoot()
+    private void Shoot()
     {
-        Instantiate(attackPrefab, firePoint.position, firePoint.rotation);
+        GameObject shot = Instantiate(attackPrefab, firePoint.position, firePoint.rotation);
+        Projectile proj = shot.GetComponent<Projectile>();
+        proj.ShotDamage = Damage;
+        proj.Shoot();
     }
 }
