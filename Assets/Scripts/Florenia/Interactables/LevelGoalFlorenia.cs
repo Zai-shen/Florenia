@@ -11,7 +11,13 @@ public class LevelGoalFlorenia : MonoBehaviour
     {
         if (col.CompareTag("Player"))
         {
-            PlayerManager.Instance.InGamePlayer.GetComponent<Player>().Die(1);
+            StartNextLevel();
         }
+    }
+
+    [ContextMenu("Start next Level")]
+    private static void StartNextLevel()
+    {
+        PlayerManager.Instance.InGamePlayer.GetComponent<Player>().Die(1);
     }
 }

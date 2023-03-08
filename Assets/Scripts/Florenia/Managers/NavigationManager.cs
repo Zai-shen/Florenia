@@ -12,11 +12,13 @@ namespace Florenia.Managers
         private void OnEnable()
         {
             DungeonManager.Instance.OnBuildingNavigation += DoBuildNavmesh;
+            DungeonManager.Instance.OnCleanUp += ClearNavMesh;
         }
 
         private void OnDisable()
         {
             DungeonManager.Instance.OnBuildingNavigation -= DoBuildNavmesh;
+            DungeonManager.Instance.OnCleanUp -= ClearNavMesh;
         }
 
         [ContextMenu("Rebuild Navmesh")]

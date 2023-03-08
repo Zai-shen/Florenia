@@ -91,8 +91,9 @@ namespace Florenia.Managers
         
         private IEnumerator RebuildLevelRoutine() {
             OnGenerate?.Invoke();
-            
+            yield return null;
             OnCleanUp?.Invoke();
+            yield return null;
             FloreniaDungeon.DestroyDungeon();
             OnDestroyed?.Invoke();
             yield return null;
@@ -105,7 +106,7 @@ namespace Florenia.Managers
             yield return new WaitForFixedUpdate();
             
             OnBuildingNavigation?.Invoke();
-            
+            yield return null;
             OnSpawningNPCs?.Invoke();
             yield return null;
     
