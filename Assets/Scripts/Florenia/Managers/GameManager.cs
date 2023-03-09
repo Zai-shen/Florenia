@@ -1,6 +1,7 @@
 ﻿using System;
 using Florenia.Utility;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Florenia.Managers
 {
@@ -10,7 +11,7 @@ namespace Florenia.Managers
         public Action ResetPause;
         private bool _gamePaused;
 
-        private int deathCount = 1;
+        private int dungeonLevel = 1;
 
         private void OnEnable()
         {
@@ -24,7 +25,7 @@ namespace Florenia.Managers
 
         private void Start()
         {
-            AddDeath(0);
+            StartDungeonLevel(1);
         }
 
         private void Update()
@@ -35,7 +36,7 @@ namespace Florenia.Managers
             }
         
             if (Input.GetKeyDown(KeyCode.R)) {
-                AddDeath(0);
+                StartDungeonLevel(0);
             }
         }
 
@@ -60,23 +61,35 @@ namespace Florenia.Managers
             }
         }
 
-        [ContextMenu("AddDeath0")]
-        private void AddDeath0()
+        [ContextMenu("Restart Game")]
+        public void RestartGame()
         {
-            AddDeath(0);
-        }
-
-        [ContextMenu("AddDeath1")]
-        private void AddDeath1()
-        {
-            AddDeath(1);
+            dungeonLevel = 1;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
         
-        public void AddDeath(int death){
+        [ContextMenu("Restart Dungeon Full")]
+        public void RestartDungeonFull()
+        {
+            StartDungeonLevel(1);
+        }
+
+        public void RestartDungeonLevel()
+        {
+            StartDungeonLevel(dungeonLevel);
+        }
+
+        [ContextMenu("Next Dungeon")]
+        public void NextDungeon()
+        {
+            dungeonLevel ++;
+            StartDungeonLevel(dungeonLevel);
+        }
+        
+        private void StartDungeonLevel(int level){
             PlayerManager.Instance.InGamePlayer?.ResetInventory();
             
-            deathCount += death;
-            switch(deathCount){
+            switch(level){
                 case 1:
                 {
                     DungeonManager.Instance.BuildSmall();
@@ -86,15 +99,10 @@ namespace Florenia.Managers
                 {
                     DungeonManager.Instance.BuildMedium();
                     break;
-                }                
-                case 3:
-                {
-                    DungeonManager.Instance.BuildBig();
-                    break;
                 }
                 default:
                 {
-                    DungeonManager.Instance.BuildSmall();
+                    DungeonManager.Instance.BuildBig();
                     break;
                 }
             }

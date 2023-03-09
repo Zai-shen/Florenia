@@ -50,14 +50,10 @@ namespace Florenia.Characters.Player
             healthbar.SetHealth(currentHealth);
         }
 
-        public void Die()
-        {
-            Die(0);
-        }
-        
-        public void Die(int death){
+        public void Die(){
             anim.SetTrigger("Death");
-            GameManager.Instance.AddDeath(death);
+            GameManager.Instance.RestartGame();
+            //GameManager.Instance.StartDungeonLevel(1);
             Health.ResetToFull();
             SetUIHealth(Health.HealthPoints);
         }
