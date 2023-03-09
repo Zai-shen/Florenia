@@ -65,6 +65,12 @@ namespace Florenia.Managers
         {
             AddDeath(0);
         }
+
+        [ContextMenu("AddDeath1")]
+        private void AddDeath1()
+        {
+            AddDeath(1);
+        }
         
         public void AddDeath(int death){
             PlayerManager.Instance.InGamePlayer?.ResetInventory();

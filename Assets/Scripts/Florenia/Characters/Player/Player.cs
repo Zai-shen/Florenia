@@ -15,8 +15,6 @@ namespace Florenia.Characters.Player
 
         #endregion
         
-        public int Damage = 20;
-
         private Inventory.Inventory _inventory;
         private Animator anim;
 

@@ -1,22 +1,36 @@
-﻿using DungeonArchitect.Flow.Items;
+﻿using System.Collections;
+using DungeonArchitect.Flow.Items;
 using Florenia.Characters.Player.Inventory;
-using Florenia.Interactables.Locking;
 using Florenia.Managers;
 using UnityEngine;
 
 namespace Florenia.Interactables.Items.PickUps
 {
+    [RequireComponent(typeof(PickUpEffect))]
     public class PickableItem : MonoBehaviour
     {
+        public PickUp PickUpSO;
         public InventoryItemType itemType;
-        public Sprite icon = null;
+        public Sprite icon;
 
+        private bool _ableToCollide = true;
+        
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (!other.CompareTag("Player"))
-                return;
+            if (!_ableToCollide) return;
+            if (!other.CompareTag("Player")) return;
 
-            AddToInventory();
+            ApplyTo(other);
+            Destroy(gameObject);
+        }
+
+        private void ApplyTo(Collider2D other)
+        {
+            PickUpSO.Apply(other.gameObject);
+            if (PickUpSO.AddToInventory)
+            {
+                AddToInventory();
+            }
         }
 
         private void AddToInventory()
@@ -42,26 +56,22 @@ namespace Florenia.Interactables.Items.PickUps
             }
         }
 
-        private void DestroyDoor(string theID)
-        {
-            LockedDoor[] _lockedDoors = FindObjectsOfType<LockedDoor>();
-            foreach (LockedDoor door in _lockedDoors)
-            {
-                foreach (var id in door.validKeys)
-                {
-                    if (id.Equals(theID))
-                    {
-                        Destroy(door.gameObject);
-                        return;
-                    }
-                }
-            }
-        }
-
-        string GetItemId()
+        private string GetItemId()
         {
             var itemMetadata = GetComponent<FlowItemMetadataComponent>();
             return (itemMetadata != null) ? itemMetadata.itemId : "";
+        }
+
+        public void SetLateCollidable(float duration)
+        {
+            StartCoroutine(SetCollidable(duration));
+        }
+
+        private IEnumerator SetCollidable(float duration)
+        {
+            _ableToCollide = false;
+            yield return new WaitForSeconds(duration);
+            _ableToCollide = true;
         }
     }
 }
